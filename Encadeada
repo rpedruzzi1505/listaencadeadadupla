@@ -1,0 +1,116 @@
+package listaDuplamenteEncadeada;
+
+public class DLinkedList {
+
+    protected DNode header;    
+    protected DNode trailer;    
+    protected int size;              
+
+    
+    public DLinkedList()
+    {
+        header = new DNode(null,null,null);
+        trailer = new DNode(null,null,null);
+        header.setNext(trailer);
+        size = 0;
+    } 
+    public void addFirst(DNode no){
+
+        DNode w;
+
+         w = header.getNext();  
+         no.setNext(w);         
+         no.setPrev(header);   
+         w.setPrev(no);           
+         header.setNext(no);
+         size = size + 1;       
+ }
+    public int size(){   
+        return size;
+  }
+
+  public boolean isEmpty(){ 
+         return (size == 0);
+  }
+
+  public DNode getFirst()throws IllegalStateException{
+         if(isEmpty())
+              throw new IllegalStateException("Lista Vazia");
+          return header.getNext();
+  }
+
+  public DNode getLast() throws IllegalStateException{
+          if(isEmpty())
+              throw new IllegalStateException("Lista Vazia");
+          return trailer.getPrev();
+  }
+  
+  public DNode getPrev(DNode no) throws IllegalArgumentException{
+      if(no==header)
+          throw new IllegalArgumentException("N�o h� n� anterior");
+      return no.getPrev();
+  }
+
+  public DNode getNext(DNode no) throws IllegalArgumentException{
+      if(no==trailer)
+          throw new IllegalArgumentException("N�o h� n� posterior");
+      return no.getNext();
+  }
+  
+  public void addAntes(DNode v, DNode no) throws IllegalArgumentException{
+      DNode u = getPrev(v);
+      no.setPrev(u);
+      no.setNext(v);
+      v.setPrev(no);
+      u.setNext(no);
+      size++;
+  }
+ 
+  public void addAfter(DNode v, DNode no) throws IllegalArgumentException{
+      DNode u = getNext(v);
+      no.setPrev(v);
+      no.setNext(u);
+      v.setNext(no);
+      u.setPrev(no);
+      size++;
+  }
+  public void addLast(DNode no){  
+      addAntes(trailer,no);
+}
+
+  public void removeNo(DNode no) throws IllegalArgumentException{
+      DNode u = getPrev(no);
+      DNode w = getNext(no);
+      u.setNext(w);
+      w.setPrev(u);
+      no.setNext(null);
+      no.setPrev(null);
+      size--;
+  }
+
+  public boolean temAnt(DNode no){
+      return (no!=header);
+  }
+ 
+  public boolean temSuc(DNode no){
+      return (no!=trailer);
+  }
+  public String toString(){
+      DNode ponteiro = header.getNext();
+      String s = "{";
+      int i = 1;
+          while(ponteiro.getNext()!=null){
+              if(i==1)
+                  s+="[.]-> ";
+              s+=" <- ";
+              s+=ponteiro.getElement();
+              s+=" -> ";
+              i++;
+              ponteiro = ponteiro.getNext();
+          }
+      return s+="<-[.]}";
+  }
+
+
+} 
+
